@@ -4,6 +4,10 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use super::command_interface::Command;
 use strsim::levenshtein;
+
+
+const MAX_THRESHOLD: usize = 5; // Max amount of broken characters
+
 pub struct VerifyFileLinksCommand {
     paths: Vec<PathBuf>,
 }
@@ -13,6 +17,7 @@ impl VerifyFileLinksCommand {
         VerifyFileLinksCommand { paths }
     }
 }
+
 
 #[derive(Debug)]
 pub struct BrokenLink {
@@ -68,7 +73,7 @@ fn find_similar_paths(target: &str, directory: &str) -> Vec<PathBuf> {
 
     visit_dirs(Path::new(directory), &mut |path| {
         let path_str = path.to_string_lossy().to_string();
-        let threshold = std::cmp::min(path_str.len() / 5, max_threshold);
+        let threshold = std::cmp::min(path_str.len() / MAX_THRESHOLD, MAX_THRESHOLD);
         if levenshtein(target, &path_str) <= threshold {
             similar_paths.push(PathBuf::from(path_str));
         }

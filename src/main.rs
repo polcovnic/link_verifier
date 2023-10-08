@@ -1,7 +1,7 @@
 use clap::Parser;
 use crate::commands::command_interface::Command;
 use crate::commands::extract_links_command::ExtractLinksCommand;
-use colored::*;
+use colored::Colorize;
 
 mod commands;
 

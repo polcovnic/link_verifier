@@ -34,7 +34,7 @@ impl Command for ExtractLinksCommand {
         for cap in md_link_regex.captures_iter(&content) {
             if let Some(link) = cap.get(1) {
                 let link_str = link.as_str();
-                if let Ok(_) = Url::parse(link_str) {
+                if Url::parse(link_str).is_ok() {
                         external_links.push(link_str.to_string());
                 } else {
                         local_files.push(PathBuf::from(link_str));
